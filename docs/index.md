@@ -7,8 +7,8 @@ hero:
   tagline: 文件系统即存储 · 插件驱动 UI · 主题随心换 · 本地数据永不离手
   actions:
     - theme: brand
-      text: 下载 Windows 版
-      link: https://github.com/li360/gewu-project/releases
+      text: 下载 Windows 内测版
+      link: https://github.com/li360/gewu-project/releases/download/beta-channel/GeWu_0.30.0_x64-setup.exe
     - theme: alt
       text: 快速入门
       link: /user-guide/
@@ -37,11 +37,18 @@ features:
     details: TypeScript 协议包 + 类型安全 API，quick-start 指南端到端可复制执行，AI 助手也能直接上手。
 ---
 
+::: warning 当前处于 Beta 内测阶段
+GeWu 目前为 **v0.30.0 内测版**，功能仍在快速迭代，可能存在缺陷与破坏性调整。
+
+- **下载**：请从 [beta 通道 Release 页面](https://github.com/li360/gewu-project/releases/tag/beta-channel) 获取安装包，应用内自动更新也走 beta 通道
+- **反馈**：遇到问题欢迎到 [GitHub Issues](https://github.com/li360/gewu-project/issues) 提交，你的反馈将直接决定正式版的形态
+:::
+
 ## 三分钟体验
 
 ```powershell
-# 1. 从 GitHub Release 下载 GeWu_x.x.x_x64-setup.exe
-# 2. 安装后创建第一个知识库（选择任意文件夹）
+# 1. 从 beta 通道下载 GeWu_0.30.0_x64-setup.exe 并安装
+# 2. 创建第一个知识库（选择任意文件夹）
 # 3. 拖拽文件进去，或点击「扫描」导入现有目录
 ```
 
@@ -52,10 +59,22 @@ features:
 # https://github.com/li360/plugin-theme-midnight
 ```
 
-## 谁在维护
+## 关于开源
 
-GeWu 由社区驱动开发，采用 [MIT 许可证](https://github.com/li360/gewu-project/blob/main/LICENSE)。欢迎提交 Issue 与 PR。
+GeWu 目前处于内测阶段，**暂未开源**。插件开发文档与协议规范已先行公开，欢迎基于文档开发主题与功能插件；待产品稳定后会评估开源计划。
 
-<style scoped>
-/* 首页 hero 区域微调 */
+<style>
+/* 缩小首页 hero 副标题字号，避免中等宽度下频繁换行 */
+.VPHero .text {
+  font-size: clamp(1.7rem, 3.8vw, 2.7rem);
+  line-height: 1.25;
+}
+.VPHero .tagline {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+}
+@media (max-width: 640px) {
+  .VPHero .text {
+    font-size: 1.5rem;
+  }
+}
 </style>
