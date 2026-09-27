@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: 下载 Windows 内测版
-      link: https://github.com/li360/gewu-project/releases/download/beta-channel/GeWu_0.30.0_x64-setup.exe
+      link: https://github.com/li360/gewu-project/releases/tag/beta-channel
     - theme: alt
       text: 快速入门
       link: /user-guide/
@@ -47,7 +47,7 @@ GeWu 目前为 **v0.30.0 内测版**，功能仍在快速迭代，可能存在�
 ## 三分钟体验
 
 ```powershell
-# 1. 从 beta 通道下载 GeWu_0.30.0_x64-setup.exe 并安装
+# 1. 打开 beta 通道 Release 页面，下载最新 GeWu_x.x.x_x64-setup.exe 并安装
 # 2. 创建第一个知识库（选择任意文件夹）
 # 3. 拖拽文件进去，或点击「扫描」导入现有目录
 ```
