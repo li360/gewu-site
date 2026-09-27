@@ -1,0 +1,14 @@
+{
+  "name": "gewu-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GeWu 软件主页与文档站点",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}
