@@ -9,6 +9,8 @@ GeWu（格物）是一个基于 Tauri + React 的个人知识管理桌面应用�
 | **[快速开始（AI 友好版）](./quick-start.md)** | **新手首选**：端到端可复制执行，含完整 manifest/源码/打包脚本，读完即可产出可安装插件 |
 | [manifest 规范](./manifest.md) | `manifest.json` 和 `PluginManifest` 的字段说明 |
 | [打包规范](./packaging.md) | 插件 JS 的打包要求、externals 配置、esbuild 示例、URL 安装与发布 |
+| [第三方 SDK](./sdk.md) | 导出 `plugin-protocol` / `kmgr-api` tarball；无需主仓库源码即可构建 |
+| [发布与社区注册表](./publishing.md) | ZIP / `update.json` / GitHub Release / `registry.json` 发布流程 |
 | [主题插件开发](./themes.md) | 纯 CSS 主题插件（无 JS）：令牌覆盖、`themes` 贡献点、打包发布 |
 | [API 参考](./api-reference.md) | `PluginContext`、事件总线、kmgr-api、**多实例过滤契约** 等 |
 | [国际化规范](./i18n.md) | 轻量 i18n 方案、键命名、语言文件格式、志愿者翻译流程 |

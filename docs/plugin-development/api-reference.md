@@ -117,6 +117,23 @@ kmgr?: KmgrApi
 
 API 详细说明见 [kmgr-api/API_SPEC.md](../../packages/kmgr-api/API_SPEC.md)。
 
+### browser
+
+```ts
+browser?: {
+  open(url: string, opts?: { mode?: "external" | "embedded" }): Promise<void>
+}
+```
+
+打开 http/https URL 的受控 API：
+
+- `external`（默认）：系统默认浏览器
+- `embedded`：GeWu 内嵌浏览器窗口
+- 宿主拒绝 `file:` / `javascript:` 等协议；`http` 仅允许 localhost / 127.0.0.1
+- 拒绝带用户名/密码的 URL
+- **不要直接 `invoke("plugin_browser_open")`**；用 `ctx.browser.open`
+- 也可以发 `browser:open` 事件，由宿主统一处理
+
 ### editor
 
 ```ts
@@ -163,6 +180,7 @@ interface EditorFileContext {
 | `overlay:open` | `{ pluginId }` | 打开覆盖层 |
 | `overlay:close` | `null` | 关闭覆盖层 |
 | `statusbar:update` | `{ id, value }` | 动态更新状态栏项值 |
+| `browser:open` | `{ url, mode?: "external" \| "embedded" }` | 请求宿主打开 URL（同样做协议校验） |
 
 ### Toast 通知示例
 

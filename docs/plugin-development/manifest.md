@@ -26,6 +26,11 @@ GeWu 插件有两份 manifest：
   "emits": ["custom:event"],
   "handles": ["file:open"],
   "preferredExtensions": [".txt"],
+  "fileIcons": { ".txt": "file-text" },
+  "projectTypes": ["gallery"],
+  "projectTypeDescriptors": [
+    { "id": "gallery", "label": "图库", "icon": "🖼️" }
+  ],
   "isEditor": false,
   "layoutHints": { "preferredWeight": 0.5 },
   "statusBarItems": [
@@ -64,8 +69,11 @@ GeWu 插件有两份 manifest：
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `capabilities` | string[] | 声明所需权限，如 `["kmgr:read", "kmgr:write"]`。workspace 据此决定是否注入 kmgr 等 API |
-| `isEditor` | boolean | 是否为编辑器插件。编辑器插件会收到 `editor` 上下文（文件内容、保存函数等） |
-| `preferredExtensions` | string[] | 编辑器插件声明的首选文件扩展名，如 `[".md", ".markdown"]` |
+| `isEditor` | boolean | 是否为编辑器插件。编辑器插件会收到 `editor` 上下文（文件内容、保存函数等），并订阅 `file:open` 接收路由来的文件 |
+| `preferredExtensions` | string[] | 编辑器插件声明的首选文件扩展名，如 `[".md", ".markdown"]`。必须**带点、小写**；双击文件时 workspace 按此自动路由，同时这些插件会出现在「切换编辑器」下拉中 |
+| `fileIcons` | object | 文件图标贡献：扩展名 → `icon-library` 图标名，如 `{ ".srt": "file-video" }`；缺省回退内置图标 |
+| `projectTypes` | string[] | 项目视图插件声明支持的**类型化项目**类型，如 `["gallery"]`（图库）。每项为小写字母开头、仅含小写字母/数字/连字符的标识。声明后：① 「新建项目」向导会列出该类型；② 文件列表点击 `.proj` 目录时，workspace 读取其 `.projmeta.json`，按 `type` 字段路由给对应插件并发出 `project:open` 事件。详见下方 [projectTypes — 类型化项目](#projecttypes--类型化项目) |
+| `projectTypeDescriptors` | array | 项目类型展示信息：`{ id, label, icon?, creatable? }`；新建项目下拉显示 `label`，缺省回退插件名；`creatable: false` 时不出现在新建向导 |
 | `layoutHints` | object | 布局偏好，见下方详细说明 |
 | `statusBarItems` | array | 状态栏项，见下方详细说明 |
 
@@ -126,6 +134,34 @@ GeWu 插件有两份 manifest：
 | `stylesheet` | string | 是 | 插件目录内的相对 `.css` 路径，禁止 `..`、绝对路径、盘符 |
 | `icon` | string | 否 | emoji 图标 |
 
+### projectTypes — 类型化项目
+
+「类型化项目」是一种以 **`.proj` 后缀目录**为载体的用户内容容器（与普通目录、`.pack` 包并列）。每个 `.proj` 目录根部有一个真相文件 `.projmeta.json`：
+
+```json
+{
+  "id": "proj-a1b2c3d4",
+  "version": 1,
+  "type": "gallery",
+  "title": "我的图库",
+  "createdAt": "2025-01-01T00:00:00.000Z",
+  "updatedAt": "2025-01-01T00:00:00.000Z",
+  "gallery": {}
+}
+```
+
+- 通用字段：`id`（`proj-` 前缀）、`version`（当前为 `1`）、`type`（项目类型，与某个插件的 `projectTypes` 项匹配）、`title`、`createdAt`、`updatedAt`
+- **显式视图插件**：可选 `viewPlugin`（插件 id）。存在且已注册时优先使用；未安装/禁用时回退按 `type` 路由
+- **类型专属段**：与 `type` 同名的键（如上例的 `gallery`），其内部结构完全由对应插件自定义（如图库的封面、评分、分组配置）；框架只负责读写通用字段
+- 项目不进入数据库，打开时由 workspace 实时读取 meta
+
+插件侧约定：
+
+1. manifest 声明 `"projectTypes": ["gallery"]`、`"handles": ["project:open"]`；需要读写项目文件时声明 `kmgr:read` / `kmgr:write`
+2. 订阅 `project:open` 事件，载荷为 `{ path, name, meta }`（`path` 为 `.proj` 目录绝对路径，`meta` 为已解析的 `.projmeta.json`）；多实例插件必须用 `createMultiInstanceFilter(containerId)` 过滤
+3. 项目目录内的文件可递归读取（如 `kmgr.listDirectory(path, true)`）；图片等媒体可通过 Tauri `convertFileSrc()` 以 `asset://` 协议直接加载（主程序已对库根及注册文件夹授权 asset scope）
+4. 类型专属配置由插件自行写回 `.projmeta.json` 的同名段（写前建议保留其他字段）
+
 ## capabilities 权限声明
 
 当前支持的 capability：
@@ -154,6 +190,7 @@ GeWu 插件有两份 manifest：
 | `emits` | `emits` | 发射的事件 |
 | `handles` | `handles` | 处理的事件 |
 | `preferredExtensions` | `preferredExtensions` | 文件扩展名关联 |
+| `projectTypes` | `projectTypes` | 支持的类型化项目类型（可选，见上方专节） |
 | `isEditor` | `isEditor` | 是否为编辑器 |
 | `layoutHints` | `layoutHints` | 布局偏好 |
 | `statusBarItems` | `statusBarItems` | 状态栏项 |

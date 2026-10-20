@@ -209,7 +209,9 @@ console.log("✅ 插件打包完成")
 3. 发布 Release（保持最新版本带 `latest` 标记），上传两个附件
 4. 用户粘贴仓库地址即可安装，后续一键更新
 
-直连失败时客户端按序尝试镜像：`gh-proxy.com`、`gh.llkk.cc` 前缀代理，以及 `kkgithub.com` 域名替换。用户在设置中配置 HTTP 代理后，全部探测与下载请求均会走代理。
+直连失败时客户端尝试镜像：`gh-proxy.com`、`ghfast.top` 前缀代理；用户在设置中配置 HTTP 代理后，全部探测与下载请求均会走代理。
+
+完整的一键发布（ZIP + update.json + GitHub Release + registry 更新）见 [发布与社区注册表](./publishing.md)。
 
 ### 纯 CSS 主题插件的打包
 
