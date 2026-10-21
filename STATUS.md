@@ -3,7 +3,7 @@
 > 更新：2026-10-21 · 维护人：li360
 
 <!-- resume:start -->
-现在: 已同步 0.36.3 插件开发文档（SDK / 发布与注册表 / fileIcons / browser / projectTypeDescriptors）。
+现在: 已同步 0.36.5 插件开发文档（SDK / 发布与注册表 / inline 浏览器面板 / capture）。
 下一步:
 - 发布本文档站并确认 Pages 构建
 - 校验发布页的命令在无主仓库源码环境下可执行
@@ -25,3 +25,4 @@
 
 - 开发与部署：[README.md](README.md)
 - 主仓库台账：[../MyProj/docs/status/todo.md](../MyProj/docs/status/todo.md)
+

@@ -121,18 +121,40 @@ API 详细说明见 [kmgr-api/API_SPEC.md](../../packages/kmgr-api/API_SPEC.md)�
 
 ```ts
 browser?: {
-  open(url: string, opts?: { mode?: "external" | "embedded" }): Promise<void>
+  open(url: string, opts?: {
+    mode?: "external" | "embedded" | "inline"
+    bounds?: { x: number; y: number; width: number; height: number }
+  }): Promise<void>
+  setBounds?(bounds: { x: number; y: number; width: number; height: number }): Promise<void>
+  setVisible?(visible: boolean): Promise<void>
+  close?(): Promise<void>
+  capture?(): Promise<{ html: string; title: string; url: string; capturedAt: string }>
+  navigate?(url: string): Promise<void>
+  back?(): Promise<void>
+  forward?(): Promise<void>
+  reload?(): Promise<void>
 }
 ```
 
 打开 http/https URL 的受控 API：
 
 - `external`（默认）：系统默认浏览器
-- `embedded`：GeWu 内嵌浏览器窗口
+- `embedded`：GeWu 内嵌浏览器窗口（独立窗口）
+- `inline`：项目视图内子 WebView，配合 `setBounds` / `setVisible`；需要宿主支持
 - 宿主拒绝 `file:` / `javascript:` 等协议；`http` 仅允许 localhost / 127.0.0.1
 - 拒绝带用户名/密码的 URL
 - **不要直接 `invoke("plugin_browser_open")`**；用 `ctx.browser.open`
 - 也可以发 `browser:open` 事件，由宿主统一处理
+
+`inline` 使用约定：
+
+1. 项目视图预留一个 `div` 作为浏览器面板
+2. 用 `ResizeObserver` 监听其 `getBoundingClientRect()`
+3. 按界面缩放 `gewu-ui-zoom` 换算后调用 `setBounds`
+4. 阅读/折叠时 `setVisible(false)`；恢复时 `true`
+5. 切项目/卸载时 `close()`
+6. 子 WebView 是全局单例；其他插件占用时 `open inline` 会报错
+7. `capture()` 只在用户点击时调用，返回 HTML 快照；不做后台抓取
 
 ### editor
 
